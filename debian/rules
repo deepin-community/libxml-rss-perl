@@ -1,4 +1,17 @@
 #!/usr/bin/make -f
 
+PKG:=$(shell dh_listpackages)
+TMP:=$(CURDIR)/debian/$(PKG)
+EGS:=$(TMP)/usr/share/doc/$(PKG)/examples
+MAN:=$(TMP)/usr/share/man/man3
+
 %:
 	dh $@
+
+override_dh_auto_install:
+	dh_auto_install
+	$(RM) -v $(MAN)/XML::RSS::Private::Output::*
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod a-x $(EGS)/README $(EGS)/*/*.rdf
